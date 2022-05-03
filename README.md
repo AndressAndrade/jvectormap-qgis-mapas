@@ -5,9 +5,10 @@ https://jvectormap.com <br>
 https://qgis.org/pt_BR/site/ <br>
 https://portaldemapas.ibge.gov.br/portal.php#mapa207417
 
-<br>
+<p>
 Live demo: https://andressandrade.github.io/jvectormap-qgis-mapas/
-<br>
+</p>
+
 
 <p align="center">
   <img alt="Mapa mesorregiao" src="preview/Screenshot_20220502_155044.png" width="80%">
