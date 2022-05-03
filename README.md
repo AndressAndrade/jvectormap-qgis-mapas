@@ -1,5 +1,5 @@
 # jvectormap-qgis-mapas
-Trabalhando com mapas interativos com JVectorMap, com mapas da Bahia obtido pelo portal do IBGE (shapes files) e modificados com QGIS
+Estudo com mapas interativos com JVectorMap, com mapas da Bahia obtido pelo portal do IBGE (shapes files) e modificados com QGIS
 
 https://jvectormap.com <br>
 https://qgis.org/pt_BR/site/ <br>
