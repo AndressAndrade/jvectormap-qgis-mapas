@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bahia demo</title>
+  <link rel="stylesheet" href="jquery-jvectormap.css" type="text/css" media="screen"/>
+  <script src="jquery-3.6.0.js"></script>
+  <script src="jquery.jvectormap.min.js"></script>
+  <script src="public/bahia_mesorregiao.js"></script>
+</head>
+<body>
+  <h1>Mapa da Bahia
+  </h1>
+  <div id="bahia" style="width: 800px; height: 600px"></div>
+  <script>
+    $(function(){
+      fetch('dados/dados-initial.json')
+      .then(response => response.json())
+      .then(data => 
+        new jvm.MultiMap({
+          container: $('#bahia'),
+          maxLevel: 1,
+          mapUrlByCode: function(code, multiMap){
+            // Retorna localização do submapa correspondente
+            return 'public/bahia-microrregiao-'+code.toLowerCase()+'-'+multiMap.defaultProjection+'.js';
+          },
+          backButtonText: "Voltar",
+          main: {
+            // Nome mapa principal
+            map: 'bahiamesorregiao_merc',
+            backgroundColor: "#969996",
+            // onRegionClick: function(event, code) {
+            //   return true;
+            // },
+            series: {
+              regions: [{
+                scale: ['#C8EEFF', '#0071A4'],
+                attribute: 'fill',
+                min: jvm.min(data),
+                max: jvm.max(data),
+                values: data,
+                legend: {
+                  // É possível alterar nome 'horizontal' para 'vertical'
+                  horizontal: true,
+                  // Titulo da legenda
+                  title: 'População'
+                }
+              }]
+            }
+          }
+        })
+      )
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+[{
+  "name": "read_data",
+  "file_name": "microrregiao-extremoOeste.shp"
+},{
+  "name": "write_data",
+  "file_name": "bahia_microrregiao2.js",
+  "format": "jvectormap",
+  "params": {
+    "code_field": "geocodigo",
+    "name_field": "nome",
+    "name": "bahiamicrorregiao2"
+  }
+}]
