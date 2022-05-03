@@ -1,5 +1,5 @@
 # jvectormap-qgis-mapas
-Trabalhando com mapa interativos com JVectorMap, com mapas da Bahia
+Trabalhando com mapas interativos com JVectorMap, com mapas da Bahia
 
 https://jvectormap.com
 
