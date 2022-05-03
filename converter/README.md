@@ -1,16 +1,19 @@
-python 2.7
-python -m  pip install booleano 
-python -m  pip install gdal
-python -m pip install shapely 
-
-talvez  
+### Versão do python 2.7 <br>
+### Pacotes
+python -m  pip install booleano <br>
+python -m  pip install gdal <br>
+python -m pip install shapely  <br>
+<br>
+Talvez  
 python -m  pip install osgeo       
 
-Obtem os shps de meso e microrregiao
+### Obter os shps de meso e microrregiao
 
-transformar o shp da mesorregiao em map do jvectormap
+### Transformar o shp da mesorregiao em map do jvectormap
 
-criar o arquivo de configuracao input_file.json
+#### Criar o arquivo de configuracao input_file.json
+Os valores do code_field e name_field foram obtidos por uma análise do arquivo shp no QGIS
+```json
  [{
   "name": "read_data",
   "file_name": "29ME2500G.shp"
@@ -24,6 +27,7 @@ criar o arquivo de configuracao input_file.json
     "name": "bahiamesorregiao"
   }
 }]
+```
 
-copiar o arquivo shp e shx para pastar que contem o arquivo processor.js
-rodar o comando python2.7 processor.py input_file.json
+#### Copiar o arquivo shp e shx para essa pasta
+#### Rodar o comando python processor.py input_file.json
