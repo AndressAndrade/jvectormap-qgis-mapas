@@ -2,15 +2,18 @@
 <html>
 <head>
   <title>Bahia demo</title>
+  <link rel="stylesheet" href="base.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="jquery-jvectormap.css" type="text/css" media="screen"/>
   <script src="jquery-3.6.0.js"></script>
   <script src="jquery.jvectormap.min.js"></script>
+  <script src="html2canvas.min.js"></script>
   <script src="public/bahia_mesorregiao.js"></script>
 </head>
 <body>
   <h1>Mapa da Bahia
   </h1>
   <div id="bahia" style="width: 800px; height: 600px"></div>
+  <button id="salvar">Salvar</button>
   <script>
     $(function(){
       fetch('dados/dados-initial.json')
@@ -18,19 +21,17 @@
       .then(data => 
         new jvm.MultiMap({
           container: $('#bahia'),
-          maxLevel: 1,
+          // maxLevel: 2 -> Mapa principal, mais dois níveis
+          maxLevel: 2,
           mapUrlByCode: function(code, multiMap){
             // Retorna localização do submapa correspondente
-            return 'public/bahia-microrregiao-'+code.toLowerCase()+'-'+multiMap.defaultProjection+'.js';
+            return 'public/bahia-'+code.toLowerCase()+'-'+multiMap.defaultProjection+'.js';
           },
           backButtonText: "Voltar",
           main: {
             // Nome mapa principal
             map: 'bahiamesorregiao_merc',
             backgroundColor: "#969996",
-            // onRegionClick: function(event, code) {
-            //   return true;
-            // },
             series: {
               regions: [{
                 scale: ['#C8EEFF', '#0071A4'],
@@ -45,11 +46,59 @@
                   title: 'População'
                 }
               }]
+            },
+            // Define estilo de cores dos nomes estáticos das regiões
+            regionLabelStyle: {
+              initial: {
+                fill: '#000000'
+              },
+              hover: {
+                fill: 'navy'
+              }
+            },
+            // Define propriedades dos nomes das regiões que aparecem estaticamente
+            labels: {
+              regions: {
+                render: function(code){
+                  return code;
+                },
+                offsets: function(code){
+                  return {
+                    '2901': [-10, 10],
+                    '2902': [35, 5],
+                    '2903': [-100, -150],
+                    '2907': [40,15]
+                  }[code];
+                }
+              }
             }
           }
         })
       )
     })
+  </script>
+  <script>
+    (function() {
+      var salvar = document.getElementById("salvar"),
+      currentCanvas = null;
+
+      function canvasDownload(canvas, filename, formato) {
+        var a = document.createElement("a");
+        a.href = canvas.toDataURL("image/" + (formato ? formato : "jpeg") );
+        a.download = filename;
+        a.click();
+      }
+
+      salvar.onclick = function() {
+        html2canvas(document.getElementById("bahia"), {
+              "logging": false //Habilita os logs
+          }).then(function(canvas) {
+              currentCanvas = canvas;
+              canvasDownload(currentCanvas, "mapa.jpg");
+              currentCanvas = null;
+          });
+      };
+    })();
   </script>
 </body>
 </html>

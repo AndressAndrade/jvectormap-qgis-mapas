@@ -13,4 +13,5 @@ Live demo: https://andressandrade.github.io/jvectormap-qgis-mapas/
 <p align="center">
   <img alt="Mapa mesorregiao" src="preview/Screenshot_20220502_155044.png" width="80%">
   <img alt="Mapa microrregiao Extremo Oeste" src="preview/Screenshot_20220502_155106.png" width="80%">
+  <img alt="Mapa cidades barreiras" src="preview/mapa.jpg" width="80%">
 </p>
