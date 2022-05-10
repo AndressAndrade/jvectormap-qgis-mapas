@@ -15,66 +15,84 @@
   <div id="bahia" style="width: 800px; height: 600px"></div>
   <button id="salvar">Salvar</button>
   <script>
+    var multiMap, codeMap
     $(function(){
-      fetch('dados/dados-initial.json')
-      .then(response => response.json())
-      .then(data => 
-        new jvm.MultiMap({
-          container: $('#bahia'),
-          // maxLevel: 2 -> Mapa principal, mais dois níveis
-          maxLevel: 2,
-          mapUrlByCode: function(code, multiMap){
-            // Retorna localização do submapa correspondente
-            return 'public/bahia-'+code.toLowerCase()+'-'+multiMap.defaultProjection+'.js';
-          },
-          backButtonText: "Voltar",
-          main: {
-            // Nome mapa principal
-            map: 'bahiamesorregiao_merc',
-            backgroundColor: "#969996",
-            series: {
-              regions: [{
-                scale: ['#C8EEFF', '#0071A4'],
-                attribute: 'fill',
-                min: jvm.min(data),
-                max: jvm.max(data),
-                values: data,
-                legend: {
-                  // É possível alterar nome 'horizontal' para 'vertical'
-                  horizontal: true,
-                  // Titulo da legenda
-                  title: 'População'
-                }
-              }]
+      $.getJSON('dados/dados-initial.json', function(data){
+        multiMap = new jvm.MultiMap({
+            container: $('#bahia'),
+            // maxLevel: 2 -> Mapa principal, mais dois níveis
+            maxLevel: 2,
+            mapUrlByCode: function(code, multiMap){
+              // Retorna localização do submapa correspondente
+              return 'public/bahia-'+code.toLowerCase()+'-'+multiMap.defaultProjection+'.js';
             },
-            // Define estilo de cores dos nomes estáticos das regiões
-            regionLabelStyle: {
-              initial: {
-                fill: '#000000'
+            backButtonText: "Voltar",
+            main: {
+              // Nome mapa principal
+              map: 'bahiamesorregiao_merc',
+              backgroundColor: "#969996",
+              series: {
+                regions: [
+                  {
+                    scale: ['#C8EEFF', '#0071A4'],
+                    attribute: 'fill',
+                    // normalizeFunction: 'polynomial',
+                    min: jvm.min(data['meso']),
+                    max: jvm.max( data['meso']),
+                    values:  data['meso'],
+                    legend: {
+                      // É possível alterar nome 'horizontal' para 'vertical'
+                      horizontal: true,
+                      // Titulo da legenda
+                      title: 'População'
+                    }
+                  }
+                ]
               },
-              hover: {
-                fill: 'navy'
-              }
-            },
-            // Define propriedades dos nomes das regiões que aparecem estaticamente
-            labels: {
-              regions: {
-                render: function(code){
-                  return code;
+              // Define estilo de cores dos nomes estáticos das regiões
+              regionLabelStyle: {
+                initial: {
+                  fill: '#000000'
                 },
-                offsets: function(code){
-                  return {
-                    '2901': [-10, 10],
-                    '2902': [35, 5],
-                    '2903': [-100, -150],
-                    '2907': [40,15]
-                  }[code];
+                hover: {
+                  fill: 'navy'
                 }
+              },
+              // Define propriedades dos nomes das regiões que aparecem estaticamente
+              labels: {
+                regions: {
+                  render: function(code){
+                    return code;
+                  },
+                  offsets: function(code){
+                    return {
+                      '2901': [-10, 10],
+                      '2902': [35, 5],
+                      '2903': [-100, -150],
+                      '2907': [40,15]
+                    }[code];
+                  }
+                }
+              },
+              onRegionClick: function(e, code){
+                codeMap = code;
               }
             }
-          }
-        })
-      )
+          })
+      // Atualizar dados da legenda
+      $(document).on('click', '.jvectormap-region.jvectormap-element', function (evt) {
+          const mapaDetalhes = multiMap.params.main;
+          const mapa = mapaDetalhes.map;
+          // Obtem dados da região que será atualizado a legenda
+          const dadosRegiao = mapaDetalhes.series.regions[0];
+          // Atualiza dados da legenda
+          // dadosRegiao.legend.title = `População ${codeMap}`;
+          dadosRegiao.legend.title = 'População';
+          dadosRegiao.values = data[codeMap];
+          dadosRegiao.min = jvm.min(data[codeMap]);
+          dadosRegiao.max = jvm.max(data[codeMap]);
+      });
+      })
     })
   </script>
   <script>
